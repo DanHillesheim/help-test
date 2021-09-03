@@ -1,0 +1,97 @@
+---
+layout: default
+title: Search Results
+---
+
+<div class="search-results">
+    <h1 class="article-header">
+        <i class="fa fa-search"></i>
+        {{page.title}}
+        <small class="text-muted">"<span id="search-term"></span>"</small>
+    </h1>
+    <div class="articles search-results">
+        <ol id="search-results"></ol>
+    </div>
+</div>
+
+<script src="../lib/lunr/lunr.js"></script>
+<script>
+    window.store = {
+    {% for article in site.articles %}
+    {% if article.hidden != true %}
+      "{{article.url | slugify}}": {
+          "title": "{{article.title | xml_escape}}",
+          "tags": "{{article.tags | join: ', ' | xml_escape}}",
+          "content": {{article.content | strip_html | strip_newlines | jsonify}},
+          "url": "{{site.baseurl}}{{article.url | xml_escape}}"
+      }
+    {% unless forloop.last %},{% endunless %}
+    {% endif %}
+    {% endfor %}
+    };
+
+    (function() {
+        function displaySearchResults(results, store) {
+            var searchResults = document.getElementById('search-results');
+
+            if (results.length) { // Are there any results?
+                var appendString = '';
+
+                for (var i = 0; i < results.length; i++) {  // Iterate over the results
+                    var item = store[results[i].ref];
+                    appendString += '<li><a href="' + item.url + '">' + item.title + '</a>';
+                    appendString += '<p class="text-muted small">' + item.content.substring(0, 300) + '...</p></li>';
+                }
+
+                searchResults.innerHTML = appendString;
+            }
+            else {
+                searchResults.innerHTML = '<li>No results found. Try another search term.</li>';
+            }
+        }
+
+        function getQueryVariable(variable) {
+            var query = window.location.search.substring(1);
+            var vars = query.split('&');
+
+            for (var i = 0; i < vars.length; i++) {
+                var pair = vars[i].split('=');
+
+                if (pair[0] === variable) {
+                    return decodeURIComponent(pair[1].replace(/\+/g, '%20'));
+                }
+            }
+        }
+
+        var searchTerm = getQueryVariable('q');
+
+        if (searchTerm) {
+            document.getElementById('search-box').setAttribute("value", searchTerm);
+            document.getElementById('search-term').innerText = searchTerm;
+
+            // Initalize lunr with the fields it will be searching on. I've given title
+            // a boost of 10 to indicate matches on this field are more important.
+            var idx = lunr(function () {
+                this.field('id');
+                this.field('title', { boost: 20 });
+                this.field('tags', { boost: 10 });
+                this.field('content');
+            });
+
+            for (var key in window.store) { // Add the data to lunr
+                idx.add({
+                    'id': key,
+                    'title': window.store[key].title,
+                    'tags': window.store[key].tags,
+                    'content': window.store[key].content
+                });
+
+                var results = idx.search(searchTerm); // Get lunr to perform a search
+                displaySearchResults(results, window.store); // We'll write this in the next section
+            }
+        }
+        else {
+            displaySearchResults([], window.store);
+        }
+    })();
+</script>

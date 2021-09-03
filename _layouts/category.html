@@ -1,0 +1,24 @@
+---
+layout: default
+---
+{% assign sorted_articles = site.articles | sort: 'order' %}
+
+<h1 class="article-header">
+    <i class="fa fa-folder-open-o"></i>
+    {{page.title}}
+</h1>
+<div class="row">
+    <div class="col-md-8">
+        <ol>
+            {% for article in sorted_articles %}
+            {% assign pageFilename = page.path | filename %}
+            {% if article.categories contains pageFilename and article.hidden != true %}
+            <li><a href="{{site.baseurl}}{{article.url}}">{{article.title}}</a></li>
+            {% endif %}
+            {% endfor %}
+        </ol>
+    </div>
+    <div class="col-md-4">
+        {% include contact.html %}
+    </div>
+</div>

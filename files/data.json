@@ -1,0 +1,71 @@
+{
+	"installedVersion": "2.9.2",
+	"appId": "app-id-string",
+	"rememberEmail": true,
+	"rememberedEmail": "username@email.com",
+	"mainWindowSize": {
+		"width": 1122,
+		"height": 733,
+		"isMaximized": false,
+		"displayBounds": {
+			"x": 0,
+			"y": 0,
+			"width": 1440,
+			"height": 900
+		},
+		"x": 89,
+		"y": 62
+	},
+	"organizationId": "your-organization-id",
+	"directoryType": 1,
+	"directoryConfig_0": {
+		"ssl": false,
+		"startTls": false,
+		"sslAllowUnauthorized": false,
+		"port": 389,
+		"currentUser": false,
+		"ad": true,
+		"pagedSearch": true,
+		"password": null
+	},
+	"directoryConfig_2": {
+		"privateKey": null
+	},
+	"directoryConfig_1": {
+		"key": null
+	},
+	"directoryConfig_3": {
+		"token": null
+	},
+	"directoryConfig_4": {
+		"region": "us",
+		"clientSecret": null
+	},
+	"syncConfig": {
+		"users": true,
+		"groups": true,
+		"interval": 5,
+		"removeDisabled": false,
+		"overwriteExisting": false,
+		"useEmailPrefixSuffix": false,
+		"creationDateAttribute": "whenCreated",
+		"revisionDateAttribute": "whenChanged",
+		"emailPrefixAttribute": "sAMAccountName",
+		"memberAttribute": "member",
+		"userObjectClass": "person",
+		"groupObjectClass": "group",
+		"userEmailAttribute": "mail",
+		"groupNameAttribute": "name",
+		"groupPath": "CN=Users",
+		"userPath": "CN=Users",
+		"largeImport": true
+	},
+	"accessToken": "bearer-access-token",
+	"userEmail": "username@email.com",
+	"userId": "user-identifier",
+	"kdf": 0,
+	"kdfIterations": 100000,
+	"clientId": "organization-api-clientid",
+	"entityId": "organization-id-string",
+	"entityType": "organization"
+}
